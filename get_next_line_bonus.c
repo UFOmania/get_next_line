@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:32:34 by massrayb          #+#    #+#             */
-/*   Updated: 2024/12/26 15:26:04 by massrayb         ###   ########.fr       */
+/*   Updated: 2024/12/26 15:19:53 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	get_line_size(char *str)
 {
@@ -32,8 +32,8 @@ int	copy_lv_to_line(char **lv, char **line)
 
 	i = 0;
 	*line = malloc(get_line_size(*lv) + 1);
-	if (*line == NULL)
-		return (1);
+	if (!*line)
+		return (0);
 	while ((*lv)[i])
 	{
 		(*line)[i] = (*lv)[i];
@@ -51,7 +51,7 @@ int	copy_lv_to_line(char **lv, char **line)
 	return (0);
 }
 
-int	init_chars(char **lv, char **line, char **buff, int fd)
+static int	init_chars(char **lv, char **line, char **buff, int fd)
 {
 	int	is_fail;
 
@@ -62,7 +62,8 @@ int	init_chars(char **lv, char **line, char **buff, int fd)
 		return (1);
 	if (read(fd, NULL, 0) == -1 || BUFFER_SIZE > INT_MAX || BUFFER_SIZE <= 0)
 	{
-		free(*lv);
+		if (*lv)
+			free(*lv);
 		*lv = NULL;
 		free(*buff);
 		return (1);
@@ -72,26 +73,27 @@ int	init_chars(char **lv, char **line, char **buff, int fd)
 
 char	*get_next_line(int fd)
 {
-	char		*line;
-	char		*buff;
-	static char	*left_over;
-	int			size;
+	char			*line;
+	char			*buff;
+	static	char	*left_over[OPEN_MAX];
+	int				size;
 
-	if (init_chars(&left_over, &line, &buff, fd) == 1)
+	if (fd > OPEN_MAX || fd < 0)
+		return (NULL);
+	if (init_chars(&left_over[fd], &line, &buff, fd) == 1)
 		return (NULL);
 	while (1)
 	{
-		if (left_over)
+		if (left_over[fd])
 		{
-			if (copy_lv_to_line(&left_over, &line) == 1)
+			if (copy_lv_to_line(&left_over[fd], &line) == 1)
 				break ;
 		}
 		size = read(fd, buff, BUFFER_SIZE);
 		if (size == 0)
 			break ;
-		if (buff_to_line(&buff, &line, &left_over, size))
+		if (buff_to_line(&buff, &line, &(left_over[fd]), size))
 			break ;
 	}
-	free(buff);
-	return (line);
+	return (free(buff), line);
 }

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:32:45 by massrayb          #+#    #+#             */
-/*   Updated: 2024/12/26 21:48:28 by massrayb         ###   ########.fr       */
+/*   Updated: 2024/12/26 10:57:08 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	save_to_left_over(char **lv, int start)
 {
@@ -66,6 +66,7 @@ static void	buff_to_left_over(char **buff, char **lv, int start, int size)
 	int	i;
 
 	i = 0;
+	*lv = NULL;
 	*lv = malloc(size - start + 1);
 	if (!*lv)
 		return ;
@@ -78,15 +79,18 @@ static void	buff_to_left_over(char **buff, char **lv, int start, int size)
 	(*lv)[i] = '\0';
 }
 
-static int	get_endline_index(char *line)
+static int	b_to_l_helper(char *line, int *is_done)
 {
 	int	i;
 
 	i = 0;
+	if (!line)
+		*is_done = 1;
 	while (line && line[i])
 		i++;
 	return (i);
 }
+
 int	buff_to_line(char **buff, char **line, char **lv, int read_size)
 {
 	int	i;
@@ -94,12 +98,11 @@ int	buff_to_line(char **buff, char **line, char **lv, int read_size)
 	int	is_done;
 
 	i = 0;
-	j = 0;
+	j = -1;
 	is_done = 0;
-
 	extend_line(line, get_line_size(*buff));
-	i = get_endline_index(*line);
-	while (*line && j < read_size)
+	i = b_to_l_helper(*line, &is_done);
+	while (*line && ++j < read_size)
 	{
 		(*line)[i++] = (*buff)[j];
 		if ((*buff)[j] == '\n')
@@ -109,7 +112,6 @@ int	buff_to_line(char **buff, char **line, char **lv, int read_size)
 			is_done = 1;
 			break ;
 		}
-		j++;
 	}
 	if (*line)
 		(*line)[i] = '\0';
