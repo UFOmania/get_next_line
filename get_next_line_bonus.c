@@ -6,7 +6,7 @@
 /*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:32:34 by massrayb          #+#    #+#             */
-/*   Updated: 2024/12/26 15:19:53 by massrayb         ###   ########.fr       */
+/*   Updated: 2024/12/28 14:14:51 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ static int	init_chars(char **lv, char **line, char **buff, int fd)
 
 char	*get_next_line(int fd)
 {
-	char			*line;
-	char			*buff;
-	static	char	*left_over[OPEN_MAX];
-	int				size;
+	char		*line;
+	char		*buff;
+	static char	*left_over[OPEN_MAX];
+	int			size;
 
 	if (fd > OPEN_MAX || fd < 0)
 		return (NULL);

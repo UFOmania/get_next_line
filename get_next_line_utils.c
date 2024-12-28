@@ -6,7 +6,7 @@
 /*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:32:45 by massrayb          #+#    #+#             */
-/*   Updated: 2024/12/26 21:48:28 by massrayb         ###   ########.fr       */
+/*   Updated: 2024/12/28 14:15:16 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static int	get_endline_index(char *line)
 		i++;
 	return (i);
 }
+
 int	buff_to_line(char **buff, char **line, char **lv, int read_size)
 {
 	int	i;
@@ -96,7 +97,6 @@ int	buff_to_line(char **buff, char **line, char **lv, int read_size)
 	i = 0;
 	j = 0;
 	is_done = 0;
-
 	extend_line(line, get_line_size(*buff));
 	i = get_endline_index(*line);
 	while (*line && j < read_size)
