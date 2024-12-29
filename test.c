@@ -8,9 +8,12 @@ void check()
 }
 int main(){
 	int fd = open("x.txt", O_RDONLY);
-	char *line = get_next_line(fd);
-	printf("%s",line);
-	free (line);
+	for(int i = 0; i < 20; i++)
+	{
+		char *line = get_next_line(fd);
+		printf("%s",line);
+		free (line);
+	}
 	check();
 	return (0);
 }

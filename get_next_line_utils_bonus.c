@@ -6,7 +6,7 @@
 /*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:32:45 by massrayb          #+#    #+#             */
-/*   Updated: 2024/12/26 10:57:08 by massrayb         ###   ########.fr       */
+/*   Updated: 2024/12/29 11:26:14 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,7 @@ void	save_to_left_over(char **lv, int start)
 	if (i > 0)
 		new_lv = malloc(i + 1);
 	while (new_lv && (*lv)[start] && i > 0)
-	{
-		new_lv[j] = (*lv)[start];
-		start++;
-		j++;
-	}
+		new_lv[j++] = (*lv)[start++];
 	if (new_lv)
 		new_lv[j] = '\0';
 	free(*lv);
@@ -66,7 +62,6 @@ static void	buff_to_left_over(char **buff, char **lv, int start, int size)
 	int	i;
 
 	i = 0;
-	*lv = NULL;
 	*lv = malloc(size - start + 1);
 	if (!*lv)
 		return ;
@@ -79,13 +74,11 @@ static void	buff_to_left_over(char **buff, char **lv, int start, int size)
 	(*lv)[i] = '\0';
 }
 
-static int	b_to_l_helper(char *line, int *is_done)
+static int	b_to_l_helper(char *line)
 {
 	int	i;
 
 	i = 0;
-	if (!line)
-		*is_done = 1;
 	while (line && line[i])
 		i++;
 	return (i);
@@ -101,7 +94,7 @@ int	buff_to_line(char **buff, char **line, char **lv, int read_size)
 	j = -1;
 	is_done = 0;
 	extend_line(line, get_line_size(*buff));
-	i = b_to_l_helper(*line, &is_done);
+	i = b_to_l_helper(*line);
 	while (*line && ++j < read_size)
 	{
 		(*line)[i++] = (*buff)[j];

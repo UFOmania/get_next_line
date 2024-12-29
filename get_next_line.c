@@ -6,7 +6,7 @@
 /*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:32:34 by massrayb          #+#    #+#             */
-/*   Updated: 2024/12/26 15:26:04 by massrayb         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:37:16 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,18 @@ int	copy_lv_to_line(char **lv, char **line)
 
 int	init_chars(char **lv, char **line, char **buff, int fd)
 {
-	int	is_fail;
-
-	is_fail = 0;
 	*line = NULL;
 	*buff = malloc(BUFFER_SIZE);
 	if (!*buff)
-		return (1);
-	if (read(fd, NULL, 0) == -1 || BUFFER_SIZE > INT_MAX || BUFFER_SIZE <= 0)
+		return (-1);
+	if (read(fd, NULL, 0) == -1)
 	{
 		free(*lv);
 		*lv = NULL;
 		free(*buff);
-		return (1);
+		return (-1);
 	}
-	return (0);
+	return (1);
 }
 
 char	*get_next_line(int fd)
@@ -77,7 +74,7 @@ char	*get_next_line(int fd)
 	static char	*left_over;
 	int			size;
 
-	if (init_chars(&left_over, &line, &buff, fd) == 1)
+	if (init_chars(&left_over, &line, &buff, fd) == -1)
 		return (NULL);
 	while (1)
 	{

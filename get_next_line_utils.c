@@ -6,7 +6,7 @@
 /*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:32:45 by massrayb          #+#    #+#             */
-/*   Updated: 2024/12/28 14:15:16 by massrayb         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:36:16 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,7 @@ void	save_to_left_over(char **lv, int start)
 	if (i > 0)
 		new_lv = malloc(i + 1);
 	while (new_lv && (*lv)[start] && i > 0)
-	{
-		new_lv[j] = (*lv)[start];
-		start++;
-		j++;
-	}
+		new_lv[j++] = (*lv)[start++];
 	if (new_lv)
 		new_lv[j] = '\0';
 	free(*lv);
